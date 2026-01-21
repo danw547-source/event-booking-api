@@ -1,59 +1,273 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎟️ Event Booking API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful API built with **Laravel 12** for managing **events, attendees, and bookings**.
+This project demonstrates database design, request validation, error handling, and testing best practices in Laravel.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🧩 Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The API allows you to:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Create, update, delete, and list **events** (with pagination)
+* Register and manage **attendees**
+* Create **bookings** for events
+* Prevent **overbooking** and **duplicate bookings**
+* Validate incoming requests and return structured JSON responses
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## ⚙️ Tech Stack
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* **Framework:** Laravel 12 (PHP 8.2+)
+* **Local Development:** [Laravel Herd](https://herd.laravel.com)
+* **Database:** MySQL (managed using [TablePlus](https://tableplus.com))
+* **Testing:** PHPUnit & Laravel's built-in testing suite
+* **API Testing:** Postman
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Getting Started
 
-### Premium Partners
+### 1️⃣ Clone the repository
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+git clone https://github.com/your-username/event-booking-api.git
+cd event-booking-api
+```
 
-## Contributing
+### 2️⃣ Install dependencies
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+```
 
-## Code of Conduct
+### 3️⃣ Configure environment
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Copy the `.env.example` file to `.env`:
 
-## Security Vulnerabilities
+```bash
+cp .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Update the following section for your local database (as configured in TablePlus):
 
-## License
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=event_booking
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 4️⃣ Generate the app key
+
+```bash
+php artisan key:generate
+```
+
+### 5️⃣ Run migrations
+
+```bash
+php artisan migrate
+```
+
+### 6️⃣ Start the local server
+
+If you're using Laravel Herd, the project should already be available at:
+
+```
+http://event-booking-api.test
+```
+
+Otherwise, start the built-in Laravel server:
+
+```bash
+php artisan serve
+```
+
+API will be available at:
+
+```
+http://127.0.0.1:8000/api
+```
+
+---
+
+## 🧾 API Endpoints
+
+### 🎫 Events
+
+| Action           | Method | URL                | Body / Params                                                                    |
+| ---------------- | ------ | ------------------ | -------------------------------------------------------------------------------- |
+| List all events  | GET    | `/api/events`      | Optional: `?page=2` (paginated)                                                  |
+| Get single event | GET    | `/api/events/{id}` | –                                                                                |
+| Create event     | POST   | `/api/events`      | `{ "title": "Concert", "description": "...", "date": "2026-02-01 19:00:00", "country": "UK", "capacity": 100 }` |
+| Update event     | PUT    | `/api/events/{id}` | `{ "title": "Updated Title" }` (partial updates supported)                       |
+| Delete event     | DELETE | `/api/events/{id}` | –                                                                                |
+
+**Event Fields:**
+- `title` (required, string)
+- `description` (required, text)
+- `date` (required, datetime)
+- `country` (required, string)
+- `capacity` (required, integer, min: 1)
+
+---
+
+### 👤 Attendees
+
+| Action             | Method | URL                   | Body                                                    |
+| ------------------ | ------ | --------------------- | ------------------------------------------------------- |
+| List all attendees | GET    | `/api/attendees`      | –                                                       |
+| Get attendee       | GET    | `/api/attendees/{id}` | –                                                       |
+| Register attendee  | POST   | `/api/attendees`      | `{ "name": "Dan Wrigley", "email": "dan@example.com" }` |
+| Update attendee    | PUT    | `/api/attendees/{id}` | `{ "name": "Updated Name", "email": "updated@example.com" }` |
+| Delete attendee    | DELETE | `/api/attendees/{id}` | –                                                       |
+
+**Attendee Fields:**
+- `name` (required, string)
+- `email` (required, string, unique)
+
+🔒 **Validation:** Duplicate emails are prevented with a 422 error response.
+
+---
+
+### 🧾 Bookings
+
+| Action         | Method | URL             | Body                                  |
+| -------------- | ------ | --------------- | ------------------------------------- |
+| Create booking | POST   | `/api/bookings` | `{ "event_id": 1, "attendee_id": 3 }` |
+
+🔒 The API prevents:
+
+* **Overbooking** when event capacity is reached (422 error: "Event is fully booked")
+* **Duplicate bookings** by the same attendee for the same event (422 error: "Duplicate booking")
+
+---
+
+## 🧪 Testing
+
+Run the full test suite:
+
+```bash
+php artisan test
+```
+
+### Run a specific test class
+
+```bash
+php artisan test --filter=BookingTest
+php artisan test --filter=AttendeeTest
+```
+
+### Run a specific test method
+
+```bash
+php artisan test --filter=test_event_capacity_enforced
+```
+
+### Test Coverage
+
+**AttendeeTest.php:**
+- ✅ Register attendee
+- ✅ Get attendee details
+- ✅ Get all attendees (20 records)
+- ✅ Update attendee details
+- ✅ Delete attendee
+- ✅ Prevent duplicate email registration
+
+**BookingTest.php:**
+- ✅ Book event successfully
+- ✅ Enforce event capacity (overbooking prevention)
+- ✅ Prevent duplicate bookings
+- ✅ List events with pagination
+- ✅ Update event
+- ✅ Delete event
+- ✅ Paginate events (30 records, page 2)
+
+---
+
+## 🔐 Authentication (not implemented)
+
+Authentication was not required for this task, but in a real-world application:
+
+* **Laravel Sanctum** would be used for API token-based authentication.
+* **Authenticated users** could manage events and view bookings.
+* **Unauthenticated attendees** could register and book events.
+
+This structure ensures secure access while keeping public endpoints open where needed.
+
+---
+
+## 🐳 Docker (optional)
+
+This project currently runs locally using Laravel Herd and TablePlus.
+
+However, it could easily be **Dockerized** using a multi-container setup:
+
+* A PHP 8.2+ container for the Laravel app
+* A MySQL container for the database
+* A simple `docker-compose.yml` for reproducible environments
+
+Example:
+
+```bash
+docker compose up -d
+```
+
+Mentioning this demonstrates awareness of modern deployment practices.
+
+---
+
+## 📦 Project Structure
+
+```
+app/
+├─ Http/
+│  ├─ Controllers/
+│  │  ├─ Controller.php
+│  │  └─ Api/
+│  │     ├─ EventController.php
+│  │     ├─ AttendeeController.php
+│  │     └─ BookingController.php
+├─ Models/
+│  ├─ Event.php
+│  ├─ Attendee.php
+│  ├─ Booking.php
+│  └─ User.php
+database/
+├─ factories/
+│  ├─ AttendeeFactory.php
+│  └─ EventFactory.php
+├─ migrations/
+│  ├─ 2026_01_18_120645_create_events_table.php
+│  ├─ 2026_01_18_120653_create_attendees_table.php
+│  ├─ 2026_01_18_120701_create_bookings_table.php
+│  └─ 2026_01_18_124142_create_sessions_table.php
+routes/
+├─ api.php
+├─ web.php
+└─ console.php
+tests/
+├─ Feature/
+│  ├─ AttendeeTest.php
+│  └─ BookingTest.php
+└─ Unit/
+   └─ ExampleTest.php
+```
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+## ✉️ Author
+
+**Dan Wrigley**  
+Fully insured dog walker and pet sitter in Winchester, and software developer with experience in PHP, Laravel, SQL, JavaScript, and .NET.  
+[GitHub Profile](https://github.com/your-username)
