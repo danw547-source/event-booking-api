@@ -32,7 +32,7 @@ The API allows you to:
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/event-booking-api.git
+git clone https://github.com/danw547-source/event-booking-api.git
 cd event-booking-api
 ```
 
@@ -189,7 +189,52 @@ php artisan test --filter=test_event_capacity_enforced
 
 ---
 
-## 🔐 Authentication (not implemented)
+## � Postman Collection
+
+A complete Postman collection is included for easy API testing. The collection includes all endpoints organized into folders (Events, Attendees, Bookings) with pre-configured requests.
+
+### Import into Postman
+
+1. Open Postman
+2. Click **Import** in the top-left corner
+3. Select the following files from the `postman/` directory:
+   - `Event_Booking_API.postman_collection.json` (API requests)
+   - `Local_Herd.postman_environment.json` (environment variables)
+4. Select the **Local Herd** environment from the dropdown in the top-right
+5. Start testing the API endpoints
+
+### Available Requests
+
+**Events:**
+- POST Create Event
+- GET All Events
+- GET Single Event
+- PUT Update Event
+- DELETE Delete Event
+
+**Attendees:**
+- POST Create Attendee
+- GET All Attendees
+- GET Single Attendee
+- PUT Update Attendee
+- DELETE Delete Attendee
+
+**Bookings:**
+- POST Create Booking
+- GET All Bookings
+- GET Single Booking
+- DELETE Delete Booking
+
+### Environment Variables
+
+The **Local Herd** environment is pre-configured with:
+- `baseURL`: `http://event-booking-api.test` (Laravel Herd local domain)
+
+Update the `baseURL` if you're using a different local server setup.
+
+---
+
+## �🔐 Authentication (not implemented)
 
 Authentication was not required for this task, but in a real-world application:
 
@@ -269,5 +314,5 @@ This project is open source and available under the [MIT License](LICENSE).
 ## ✉️ Author
 
 **Dan Wrigley**  
-Fully insured dog walker and pet sitter in Winchester, and software developer with experience in PHP, Laravel, SQL, JavaScript, and .NET.  
-[GitHub Profile](https://github.com/your-username)
+Software developer with experience in PHP, Laravel, SQL, JavaScript, and .NET.  
+[GitHub Profile](https://github.com/danw547-source)
