@@ -20,10 +20,37 @@ The API allows you to:
 ## ⚙️ Tech Stack
 
 * **Framework:** Laravel 12 (PHP 8.2+)
-* **Local Development:** [Laravel Herd](https://herd.laravel.com)
-* **Database:** MySQL (managed using [TablePlus](https://tableplus.com))
+* **Local Development:** [Laravel Herd](https://herd.laravel.com) (required)
+* **Database:** SQLite (managed using [TablePlus](https://tableplus.com)) (required)
 * **Testing:** PHPUnit & Laravel's built-in testing suite
 * **API Testing:** Postman
+
+---
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+### Required Tools
+
+1. **[Laravel Herd](https://herd.laravel.com)** - Download and install for your OS
+   - Provides PHP, Composer, and automatic `.test` domain management
+   - No additional configuration needed
+
+2. **[TablePlus](https://tableplus.com)** - Download and install for database management
+
+### Setting up TablePlus
+
+After completing the setup steps below, you'll connect TablePlus to your SQLite database:
+
+1. **Open TablePlus** and click **Create a new connection**
+2. Select **SQLite** as the connection type
+3. Configure the connection:
+   - **Name:** `Event Booking API` (or any name you prefer)
+   - Click **Browse** and navigate to your project folder
+   - Select the `database.sqlite` file in the `database/` directory
+4. Click **Connect**
+5. You should now see all your tables (events, attendees, bookings) after running migrations
 
 ---
 
@@ -31,35 +58,34 @@ The API allows you to:
 
 ### 1️⃣ Clone the repository
 
+Clone the project into your **Herd folder** (usually `~/Herd` on macOS/Linux or `C:\Users\YourUsername\Herd` on Windows):
+
 ```bash
+cd ~/Herd  # or C:\Users\YourUsername\Herd on Windows
 git clone https://github.com/danw547-source/event-booking-api.git
 cd event-booking-api
 ```
 
-### 2️⃣ Install dependencies
+> **Note:** Placing the project in the Herd folder allows Laravel Herd to automatically serve it at `http://event-booking-api.test`
+
+### 2️⃣ Open in your IDE
+
+Open the project in your preferred IDE (VS Code, PHPStorm, etc.):
+
+```bash
+code .  # For VS Code
+# or simply open the folder in your IDE
+```
+
+### 3️⃣ Install dependencies
+
+Install Laravel and all project dependencies using Composer (included with Herd):
 
 ```bash
 composer install
 ```
 
-### 3️⃣ Configure environment
-
-Copy the `.env.example` file to `.env`:
-
-```bash
-cp .env.example .env
-```
-
-Update the following section for your local database (as configured in TablePlus):
-
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=event_booking
-DB_USERNAME=root
-DB_PASSWORD=
-```
+This will install Laravel 12 and all required packages defined in `composer.json`. The `artisan` file (Laravel's command-line tool) is included with Laravel in the project root.
 
 ### 4️⃣ Generate the app key
 
@@ -67,30 +93,40 @@ DB_PASSWORD=
 php artisan key:generate
 ```
 
-### 5️⃣ Run migrations
+### 5️⃣ Create the database file
+
+Create an empty SQLite database file:
 
 ```bash
-php artisan migrate
+touch database/database.sqlite  # On macOS/Linux
+# or
+type nul > database\database.sqlite  # On Windows
 ```
 
-### 6️⃣ Start the local server
+### 6️⃣ Run migrations and seed the database
 
-If you're using Laravel Herd, the project should already be available at:
+```bash
+php artisan migrate --seed
+```
+
+This command does two things:
+1. **Migrates** - Creates all database tables (events, attendees, bookings, sessions)
+2. **Seeds** - Populates the database with sample data using the factories and seeders defined in `database/seeders/`
+
+The `--seed` flag automatically runs the seeders after migrations complete, giving you test data to work with immediately.
+
+### 7️⃣ Access the application
+
+With Laravel Herd, your project is automatically available at:
 
 ```
 http://event-booking-api.test
 ```
 
-Otherwise, start the built-in Laravel server:
-
-```bash
-php artisan serve
-```
-
-API will be available at:
+API endpoints are accessible at:
 
 ```
-http://127.0.0.1:8000/api
+http://event-booking-api.test/api
 ```
 
 ---
