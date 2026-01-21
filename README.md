@@ -63,6 +63,12 @@ Clone the project into your **Herd folder** (usually `~/Herd` on macOS/Linux or 
 ```bash
 cd ~/Herd  # or C:\Users\YourUsername\Herd on Windows
 git clone https://github.com/danw547-source/event-booking-api.git
+
+# Rename the folder to remove the branch name
+mv event-booking-api-main event-booking-api  # macOS/Linux
+# or
+ren event-booking-api-main event-booking-api  # Windows
+
 cd event-booking-api
 ```
 
@@ -233,11 +239,13 @@ A complete Postman collection is included for easy API testing. The collection i
 
 1. Open Postman
 2. Click **Import** in the top-left corner
-3. Select the following files from the `postman/` directory:
+3. Select **both** of the following files from the `app/Postman/` directory:
    - `Event_Booking_API.postman_collection.json` (API requests)
    - `Local_Herd.postman_environment.json` (environment variables)
-4. Select the **Local Herd** environment from the dropdown in the top-right
+4. **Important:** After importing, select the **Local Herd** environment from the dropdown in the top-right corner
 5. Start testing the API endpoints
+
+> **Note:** You must import both files and activate the environment for the `baseURL` variable to work correctly in your requests.
 
 ### Available Requests
 
